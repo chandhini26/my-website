@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DealZest – Best Amazon Deals</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --orange:#FF5B1F;--yellow:#FFC93C;--navy:#0D1B4B;
+    --pink:#FF3B7A;--teal:#00C4A7;--white:#FFFFFF;
+    --light:#FFF8F0;--dark:#0D1B4B;--gray:#6B7280;
+    --card:#FFFFFF;--shadow:0 4px 20px rgba(13,27,75,0.10);
+  }
+  body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--dark)}
+
+  nav{background:var(--navy);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100}
+  .logo{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;color:var(--yellow);letter-spacing:-1px}
+  .logo span{color:var(--orange)}
+  .nav-links{display:flex;gap:28px;list-style:none}
+  .nav-links a{color:rgba(255,255,255,0.80);text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:var(--yellow)}
+  .nav-cta{background:var(--orange);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+  .hero{background:linear-gradient(135deg,var(--navy) 0%,#1a3a8f 60%,#0D1B4B 100%);padding:80px 5% 60px;position:relative;overflow:hidden}
+  .hero-blob{position:absolute;right:-80px;top:-60px;width:420px;height:420px;background:radial-gradient(circle,rgba(255,91,31,0.25) 0%,transparent 70%);border-radius:50%}
+  .hero-blob2{position:absolute;left:30%;bottom:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(255,201,60,0.15) 0%,transparent 70%);border-radius:50%}
+  .hero-badge{display:inline-block;background:rgba(255,201,60,0.15);border:1px solid rgba(255,201,60,0.4);color:var(--yellow);padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:20px;letter-spacing:.5px}
+  .hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;color:#fff;line-height:1.1;margin-bottom:16px}
+  .hero h1 em{color:var(--yellow);font-style:normal}
+  .hero p{color:rgba(255,255,255,0.70);font-size:1.05rem;max-width:520px;line-height:1.7;margin-bottom:32px}
+  .hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+  .btn-primary{background:var(--orange);color:#fff;padding:13px 28px;border-radius:10px;font-weight:600;font-size:1rem;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:transform .15s,box-shadow .15s}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,91,31,0.40)}
+  .btn-secondary{background:transparent;color:#fff;padding:12px 26px;border-radius:10px;font-weight:600;font-size:1rem;border:1.5px solid rgba(255,255,255,0.35);cursor:pointer;font-family:'DM Sans',sans-serif}
+  .hero-stats{display:flex;gap:36px;margin-top:48px;flex-wrap:wrap}
+  .stat{color:#fff}
+  .stat-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--yellow)}
+  .stat-label{font-size:.82rem;color:rgba(255,255,255,0.55);margin-top:2px}
+
+  .marquee-wrap{background:var(--orange);padding:11px 0;overflow:hidden;white-space:nowrap}
+  .marquee-inner{display:inline-block;animation:marquee 25s linear infinite}
+  .marquee-inner span{color:#fff;font-weight:600;font-size:.88rem;padding:0 32px;letter-spacing:.3px}
+  .marquee-inner span::before{content:"★  ";color:var(--yellow)}
+  @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+  .section{padding:60px 5%}
+  .section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+  .section-title{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800;color:var(--navy)}
+  .section-title span{color:var(--orange)}
+  .see-all{color:var(--orange);font-weight:600;font-size:.9rem;text-decoration:none;cursor:pointer}
+  .categories{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px}
+  .cat-card{background:#fff;border-radius:14px;padding:22px 12px;text-align:center;cursor:pointer;transition:transform .2s,box-shadow .2s;border:1.5px solid transparent;box-shadow:var(--shadow)}
+  .cat-card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(13,27,75,0.14);border-color:var(--orange)}
+  .cat-icon{font-size:2rem;margin-bottom:8px}
+  .cat-name{font-size:.82rem;font-weight:600;color:var(--navy)}
+
+  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+  .product-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s}
+  .product-card:hover{transform:translateY(-5px);box-shadow:0 12px 36px rgba(13,27,75,0.16)}
+  .product-img{width:100%;height:180px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;background:linear-gradient(135deg,#f0f4ff,#e8eeff)}
+  /* ========================================================
+     TO ADD REAL PRODUCT IMAGES:
+     Replace the emoji inside .product-img divs with:
+     <img src="YOUR_IMAGE_URL" alt="Product Name" style="width:100%;height:100%;object-fit:cover;"/>
+     ======================================================== */
+  .badge{position:absolute;top:10px;left:10px;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:6px}
+  .badge-hot{background:var(--pink);color:#fff}
+  .badge-deal{background:var(--teal);color:#fff}
+  .badge-new{background:var(--yellow);color:var(--navy)}
+  .product-info{padding:16px}
+  .product-cat{font-size:.72rem;color:var(--orange);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+  .product-name{font-size:.95rem;font-weight:600;color:var(--navy);line-height:1.4;margin-bottom:8px}
+  .stars{color:var(--yellow);font-size:.85rem;margin-bottom:8px}
+  .stars span{color:var(--gray);font-size:.78rem;margin-left:4px}
+  .price-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .price{font-size:1.2rem;font-weight:700;color:var(--orange)}
+  .price-old{font-size:.85rem;color:var(--gray);text-decoration:line-through}
+  .discount{font-size:.75rem;font-weight:700;background:#FFF0EB;color:var(--orange);padding:2px 7px;border-radius:5px}
+  /* ========================================================
+     TO ADD YOUR AMAZON AFFILIATE LINK:
+     Change href="#" to your actual affiliate link, e.g.:
+     href="https://www.amazon.in/dp/PRODUCT_ID?tag=YOUR-TAG-21"
+     ======================================================== */
+  .btn-amazon{display:block;width:100%;background:var(--orange);color:#fff;border:none;padding:10px;border-radius:10px;font-weight:600;font-size:.88rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;text-align:center;text-decoration:none}
+  .btn-amazon:hover{background:#e04a10}
+
+  .promo-banner{margin:0 5% 60px;background:linear-gradient(120deg,var(--teal),#00a68e);border-radius:20px;padding:40px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;overflow:hidden;position:relative}
+  .promo-banner::after{content:'';position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.10)}
+  .promo-text h2{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#fff;margin-bottom:8px}
+  .promo-text p{color:rgba(255,255,255,0.85);font-size:.95rem}
+  .btn-white{background:#fff;color:var(--teal);padding:12px 28px;border-radius:10px;font-weight:700;font-size:.95rem;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+  .deals-section{background:var(--navy);padding:60px 5%}
+  .deals-section .section-title{color:#fff}
+  .deals-section .section-title span{color:var(--yellow)}
+  .deals-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin-top:28px}
+  .deal-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:center;transition:background .2s}
+  .deal-card:hover{background:rgba(255,255,255,0.12)}
+  .deal-icon{font-size:2.4rem;min-width:50px;text-align:center}
+  .deal-info .deal-name{color:#fff;font-weight:600;font-size:.95rem;margin-bottom:4px}
+  .deal-info .deal-price{color:var(--yellow);font-weight:700;font-size:1.1rem}
+  .deal-info .deal-save{color:rgba(255,255,255,0.50);font-size:.78rem}
+
+  .newsletter{padding:60px 5%;text-align:center}
+  .newsletter h2{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--navy);margin-bottom:10px}
+  .newsletter p{color:var(--gray);font-size:1rem;margin-bottom:28px}
+  .newsletter-form{display:flex;gap:10px;max-width:480px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+  .newsletter-form input{flex:1;min-width:220px;padding:13px 18px;border-radius:10px;border:1.5px solid #e0e0e0;font-size:.95rem;font-family:'DM Sans',sans-serif;outline:none}
+  .newsletter-form input:focus{border-color:var(--orange)}
+  .newsletter-form button{background:var(--orange);color:#fff;border:none;padding:13px 24px;border-radius:10px;font-weight:600;font-size:.95rem;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+  footer{background:var(--navy);padding:40px 5% 24px}
+  .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
+  .footer-brand .logo{font-size:1.4rem;margin-bottom:12px;display:block}
+  .footer-brand p{color:rgba(255,255,255,0.50);font-size:.85rem;line-height:1.7;max-width:220px}
+  .footer-col h4{color:rgba(255,255,255,0.70);font-size:.8rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;margin-bottom:14px}
+  .footer-col a{display:block;color:rgba(255,255,255,0.50);text-decoration:none;font-size:.85rem;margin-bottom:9px;transition:color .2s}
+  .footer-col a:hover{color:#fff}
+  .footer-divider{border:none;border-top:1px solid rgba(255,255,255,0.10);margin-bottom:20px}
+  .footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  .footer-bottom p{color:rgba(255,255,255,0.35);font-size:.78rem}
+  .affiliate-note{color:rgba(255,255,255,0.30);font-size:.75rem;max-width:400px;text-align:right}
+
+  @media(max-width:700px){
+    .footer-top{grid-template-columns:1fr 1fr}
+    .hero-stats{gap:20px}
+    .nav-links{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Deal<span>Zest</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Deals</a></li>
+    <li><a href="#">Categories</a></li>
+    <li><a href="#">Top Picks</a></li>
+    <li><a href="#">Blog</a></li>
+  </ul>
+  <button class="nav-cta">🔥 Today's Deals</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob"></div>
+  <div class="hero-blob2"></div>
+  <div class="hero-badge">✦ Amazon's Best Deals — Curated Daily</div>
+  <h1>Find the <em>Best Deals</em><br/>On Everything You Love</h1>
+  <p>Handpicked products, real savings. From electronics to home essentials — DealZest finds the best Amazon deals so you don't have to.</p>
+  <div class="hero-btns">
+    <button class="btn-primary">Shop Top Picks →</button>
+    <button class="btn-secondary">Browse Categories</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Products Curated</div></div>
+    <div class="stat"><div class="stat-num">Up to 70%</div><div class="stat-label">Off Amazon Prices</div></div>
+    <div class="stat"><div class="stat-num">Daily</div><div class="stat-label">Deal Updates</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-inner">
+    <span>Electronics</span><span>Home & Kitchen</span><span>Fashion</span><span>Beauty</span><span>Sports</span><span>Toys & Games</span><span>Books</span><span>Automotive</span><span>Pet Supplies</span><span>Office</span>
+    <span>Electronics</span><span>Home & Kitchen</span><span>Fashion</span><span>Beauty</span><span>Sports</span><span>Toys & Games</span><span>Books</span><span>Automotive</span><span>Pet Supplies</span><span>Office</span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Shop by <span>Category</span></div>
+    <a class="see-all" href="#">View All →</a>
+  </div>
+  <div class="categories">
+    <div class="cat-card"><div class="cat-icon">📱</div><div class="cat-name">Electronics</div></div>
+    <div class="cat-card"><div class="cat-icon">🏠</div><div class="cat-name">Home & Kitchen</div></div>
+    <div class="cat-card"><div class="cat-icon">👗</div><div class="cat-name">Fashion</div></div>
+    <div class="cat-card"><div class="cat-icon">💄</div><div class="cat-name">Beauty</div></div>
+    <div class="cat-card"><div class="cat-icon">🏋️</div><div class="cat-name">Sports</div></div>
+    <div class="cat-card"><div class="cat-icon">🧸</div><div class="cat-name">Toys</div></div>
+    <div class="cat-card"><div class="cat-icon">📚</div><div class="cat-name">Books</div></div>
+    <div class="cat-card"><div class="cat-icon">🐾</div><div class="cat-name">Pet Supplies</div></div>
+    <div class="cat-card"><div class="cat-icon">🚗</div><div class="cat-name">Automotive</div></div>
+    <div class="cat-card"><div class="cat-icon">💻</div><div class="cat-name">Computers</div></div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section" style="padding-top:0">
+  <div class="section-header">
+    <div class="section-title">🔥 <span>Hot</span> Right Now</div>
+    <a class="see-all" href="#">See All Products →</a>
+  </div>
+  <div class="products-grid">
+
+    <!-- PRODUCT 1 -->
+    <!-- Replace href="#" with your Amazon affiliate link -->
+    <!-- Replace emoji with <img src="..." /> for real image -->
+    <div class="product-card">
+      <div class="product-img">🎧<span class="badge badge-hot">HOT</span></div>
+      <div class="product-info">
+        <div class="product-cat">Electronics</div>
+        <div class="product-name">Wireless Noise-Cancelling Headphones</div>
+        <div class="stars">★★★★★ <span>(2,481)</span></div>
+        <div class="price-row"><span class="price">₹2,499</span><span class="price-old">₹5,999</span><span class="discount">-58%</span></div>
+        <a class="btn-amazon" href="https://www.amazon.in/dp/PRODUCT_ID?tag=YOUR-TAG-21" target="_blank" rel="nofollow">View on Amazon →</a>
+      </div>
+    </div>
+
+    <!-- PRODUCT 2 -->
+    <div class="product-card">
+      <div class="product-img">☕<span class="badge badge-deal">DEAL</span></div>
+      <div class="product-info">
+        <div class="product-cat">Home & Kitchen</div>
+        <div class="product-name">Smart Coffee Maker with App Control</div>
+        <div class="stars">★★★★☆ <span>(1,203)</span></div>
+        <div class="price-row"><span class="price">₹3,299</span><span class="price-old">₹6,500</span><span class="discount">-49%</span></div>
+        <a class="btn-amazon" href="https://www.amazon.in/dp/PRODUCT_ID?tag=YOUR-TAG-21" target="_blank" rel="nofollow">View on Amazon →</a>
+      </div>
+    </div>
+
+    <!-- PRODUCT 3 -->
+    <div class="product-card">
+      <div class="product-img">👟<span class="badge badge-new">NEW</span></div>
+      <div class="product-info">
+        <div class="product-cat">Fashion</div>
+        <div class="product-name">Men's Running Sneakers — Lightweight</div>
+        <div class="stars">★★★★★ <span>(876)</span></div>
+        <div class="price-row"><span class="price">₹1,799</span><span class="price-old">₹3,999</span><span class="discount">-55%</span></div>
+        <a class="btn-amazon" href="https://www.amazon.in/dp/PRODUCT_ID?tag=YOUR-TAG-21" target="_blank" rel="nofollow">View on Amazon →</a>
+      </div>
+    </div>
+
+    <!-- PRODUCT 4 -->
+    <div class="product-card">
+      <div class="product-img">📷<span class="badge badge-hot">HOT</span></div>
+      <div class="product-info">
+        <div class="product-cat">Electronics</div>
+        <div class="product-name">Action Camera 4K Ultra HD Waterproof</div>
+        <div class="stars">★★★★☆ <span>(3,102)</span></div>
+        <div class="price-row"><span class="price">₹4,999</span><span class="price-old">₹9,999</span><span class="discount">-50%</span></div>
+        <a class="btn-amazon" href="https://www.amazon.in/dp/PRODUCT_ID?tag=YOUR-TAG-21" target="_blank" rel="nofollow">View on Amazon →</a>
+      </div>
+    </div>
+
+    <!-- PRODUCT 5 -->
+    <div class="product-card">
+      <div class="product-img">🌿<span class="badge badge-deal">DEAL</span></div>
+      <div class="product-info">
+        <div class="product-cat">Beauty</div>
+        <div class="product-name">Vitamin C Face Serum 30ml — Brightening</div>
+        <div class="stars">★★★★★ <span>(5,670)</span></div>
+        <div class="price-row"><span class="price">₹349</span><span class="price-old">₹899</span><span class="discount">-61%</span></div>
+        <a class="btn-amazon" href="https://www.amazon.in/dp/PRODUCT_ID?tag=YOUR-TAG-21" target="_blank" rel="nofollow">View on Amazon →</a>
+      </div>
+    </div>
+
+    <!-- PRODUCT 6 -->
+    <div class="product-card">
+      <div class="product-img">🏋️<span class="badge badge-new">NEW</span></div>
+      <div class="product-info">
+        <div class="product-cat">Sports</div>
+        <div class="product-name">Resistance Bands Set — 5 Levels</div>
+        <div class="stars">★★★★☆ <span>(1,540)</span></div>
+        <div class="price-row"><span class="price">₹499</span><span class="price-old">₹1,299</span><span class="discount">-62%</span></div>
+        <a class="btn-amazon" href="https://www.amazon.in/dp/PRODUCT_ID?tag=YOUR-TAG-21" target="_blank" rel="nofollow">View on Amazon →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROMO BANNER -->
+<div class="promo-banner">
+  <div class="promo-text">
+    <h2>⚡ Flash Sale — Today Only!</h2>
+    <p>Up to 70% off on electronics, home essentials & more. Don't miss out!</p>
+  </div>
+  <button class="btn-white">Grab the Deals →</button>
+</div>
+
+<!-- DAILY DEALS (DARK) -->
+<section class="deals-section">
+  <div class="section-title">Today's <span>Lightning</span> Deals</div>
+  <div class="deals-grid">
+    <div class="deal-card"><div class="deal-icon">🖥️</div><div class="deal-info"><div class="deal-name">Smart LED Monitor 24"</div><div class="deal-price">₹7,999</div><div class="deal-save">Save ₹4,000 · Ends in 3h</div></div></div>
+    <div class="deal-card"><div class="deal-icon">🎮</div><div class="deal-info"><div class="deal-name">Gaming Controller Pro</div><div class="deal-price">₹2,199</div><div class="deal-save">Save ₹1,800 · Ends in 5h</div></div></div>
+    <div class="deal-card"><div class="deal-icon">🧴</div><div class="deal-info"><div class="deal-name">Sunscreen SPF 50 Pack</div><div class="deal-price">₹299</div><div class="deal-save">Save ₹500 · Ends in 2h</div></div></div>
+    <div class="deal-card"><div class="deal-icon">🏕️</div><div class="deal-info"><div class="deal-name">Camping Backpack 50L</div><div class="deal-price">₹1,899</div><div class="deal-save">Save ₹2,100 · Ends in 6h</div></div></div>
+    <div class="deal-card"><div class="deal-icon">🐕</div><div class="deal-info"><div class="deal-name">Dog Training Collar</div><div class="deal-price">₹899</div><div class="deal-save">Save ₹600 · Ends in 4h</div></div></div>
+    <div class="deal-card"><div class="deal-icon">📖</div><div class="deal-info"><div class="deal-name">Bestsellers Book Bundle</div><div class="deal-price">₹599</div><div class="deal-save">Save ₹800 · Ends in 7h</div></div></div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <h2>Never Miss a Deal 🔔</h2>
+  <p>Subscribe and get daily deal alerts straight to your inbox.</p>
+  <!-- Connect this form to Mailchimp or ConvertKit for real email capture -->
+  <div class="newsletter-form">
+    <input type="email" placeholder="Enter your email address"/>
+    <button>Subscribe</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo">Deal<span style="color:var(--orange)">Zest</span></span>
+      <p>Your trusted source for handpicked Amazon deals across every category.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#">Electronics</a>
+      <a href="#">Fashion</a>
+      <a href="#">Home & Kitchen</a>
+      <a href="#">Beauty</a>
+      <a href="#">Sports</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Blog</a>
+      <a href="#">Contact</a>
+      <a href="#">Sitemap</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Disclaimer</a>
+      <a href="#">Cookie Policy</a>
+    </div>
+  </div>
+  <hr class="footer-divider"/>
+  <div class="footer-bottom">
+    <p>© 2026 DealZest. All rights reserved.</p>
+    <p class="affiliate-note">DealZest is a participant in the Amazon Associates Program. We earn from qualifying purchases.</p>
+  </div>
+</footer>
+
+</body>
+</html>
